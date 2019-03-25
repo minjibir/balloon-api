@@ -4,23 +4,38 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET           /                        controllers.HomeController.index
+GET           /                             controllers.HomeController.index
 
 
 # Participant endpoint
-GET           /participants/:id        controllers.ParticipantController.getParticipant(id: Long)
-GET           /participants            controllers.ParticipantController.getAllParticipants
-POST          /participants            controllers.ParticipantController.postParticipant
+GET           /participants/:id             controllers.ParticipantController.getParticipant(id: Long)
+GET           /participants                 controllers.ParticipantController.getAllParticipants
+POST          /participants                 controllers.ParticipantController.postParticipant
 
 
 # State endpoint
-GET           /states/:id              controllers.StateController.getState(id: Long)
-GET           /states                  controllers.StateController.getAllStates
-POST          /states                  controllers.StateController.postState
-PUT           /states                  controllers.StateController.updateState
-DELETE        /states/:id              controllers.StateController.deleteState(id: Long)
+GET           /states/:id                   controllers.StateController.getState(id: Long)
+GET           /states                       controllers.StateController.getAllStates
+POST          /states                       controllers.StateController.postState
+PUT           /states                       controllers.StateController.updateState
+DELETE        /states/:id                   controllers.StateController.deleteState(id: Long)
 
+
+# Geo Political Zones endpoint
+GET           /zones/:id                    controllers.GeoPoliticalZoneController.getGeoPoliticalZone(id: Long)
+GET           /zones                        controllers.GeoPoliticalZoneController.getAllGeoPoliticalZones
+POST          /zones                        controllers.GeoPoliticalZoneController.postGeoPoliticalZone
+PUT           /zones                        controllers.GeoPoliticalZoneController.updateGeoPoliticalZone
+DELETE        /zones/:id                    controllers.GeoPoliticalZoneController.deleteGeoPoliticalZone(id: Long)
+
+
+# Local Governmet endpoint
+GET           /local-governments/:id        controllers.LocalGovernmentController.getLocalGovernment(id: Long)
+GET           /local-governments            controllers.LocalGovernmentController.getAllLocalGovernments
+POST          /local-governments            controllers.LocalGovernmentController.postLocalGovernment
+PUT           /local-governments            controllers.LocalGovernmentController.updateLocalGovernment
+DELETE        /local-governments/:id        controllers.LocalGovernmentController.deleteLocalGovernment(id: Long)
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET           /assets/*file            controllers.Assets.versioned(path="/public", file: Asset)
+GET           /assets/*file                 controllers.Assets.versioned(path="/public", file: Asset)
