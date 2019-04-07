@@ -18,7 +18,11 @@ object QuestionDao {
   }
 
   def create(question: Question): Question = {
-    question.copy(id = run(quote(questions.insert(lift(question)).returning(_.id))))
+    question.copy(id = run(quote(
+      questions
+        .insert(lift(question))
+        .returning(_.id)
+    )))
   }
 
   def update(question: Question): Long = {

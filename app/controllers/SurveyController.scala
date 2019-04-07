@@ -1,5 +1,6 @@
 package controllers
 
+import java.time.LocalDateTime;
 import dao.SurveyDao
 import javax.inject.Inject
 import models.Survey
@@ -19,40 +20,31 @@ class SurveyController @Inject()(cc: ControllerComponents)
     optionSurvey match {
       case Some(survey) => Ok(Json.toJson(survey))
       case None => NotFound(Json.toJson("Survey not found"))
-      case _ => InternalServerError(Json.toJson("Oops! A server error has occurred!"))
     }
   }
 
   def postSurvey: Action[JsValue] = Action(parse.json) {
     implicit request => {
-      val optionalSurvey: Option[Survey] = request.body.asOpt[Survey]
-
-      optionalSurvey match {
-        case Some(survey) =>
-          val newSurvey: Survey = SurveyDao.create(survey)
-          Created(Json.toJson(newSurvey))
+      request.body.asOpt[Survey] match {
+        case Some(survey) => {
+          Created(Json.toJson(SurveyDao.create(Survey(0, survey.participantId, LocalDateTime.now()))))
+        }
         case None => BadRequest(request.body)
       }
     }
   }
 
   def updateSurvey: Action[JsValue] = Action(parse.json) {
-    implicit request => {
-      val optionSurvey = request.body.asOpt[Survey]
-
-      optionSurvey match {
+    implicit request =>
+      request.body.asOpt[Survey] match {
         case Some(p) => Ok(Json.toJson(SurveyDao.update(p)))
         case None => NotFound(Json.toJson("Record notfound!"))
       }
-    }
   }
 
   def deleteSurvey(id: Long): Action[AnyContent] = Action {
-    val surveyId = SurveyDao.delete(id)
-
-    surveyId match {
+    SurveyDao.delete(id) match {
       case id: Long => Ok(Json.toJson(s"Record with ID = $id deleted successfully!"))
-      case _ => InternalServerError(Json.toJson("Unable to delete survey at the moment!"))
     }
   }
 

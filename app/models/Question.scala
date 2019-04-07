@@ -7,7 +7,7 @@ import play.api.libs.json.{Json, Reads, Writes}
 case class Question(
                      id: Long,
                      text: String,
-                     addedAt: LocalDateTime,
+                     addedAt: LocalDateTime = LocalDateTime.now()
                    )
 
 object Question {

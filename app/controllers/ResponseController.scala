@@ -19,19 +19,21 @@ class ResponseController @Inject()(cc: ControllerComponents)
     optionResponse match {
       case Some(response) => Ok(Json.toJson(response))
       case None => NotFound(Json.toJson("Response not found"))
-      case _ => InternalServerError(Json.toJson("Oops! A server error has occurred!"))
     }
   }
 
   def postResponse: Action[JsValue] = Action(parse.json) {
     implicit request => {
-      val optionalResponse: Option[Response] = request.body.asOpt[Response]
-
-      optionalResponse match {
-        case Some(response) =>
-          val newResponse: Response = ResponseDao.create(response)
-          Created(Json.toJson(newResponse))
-        case None => BadRequest(request.body)
+      request.body match {
+        case JsArray(responses) =>
+          responses.map {
+            e =>
+              e.asOpt[Response] match {
+                case Some(r) => ResponseDao.create(Response(r.id, r.surveyId, r.questionId, r.response))
+              }
+          }
+          Created("Successful.")
+        case _ => BadRequest("Bad request.")
       }
     }
   }
@@ -52,7 +54,6 @@ class ResponseController @Inject()(cc: ControllerComponents)
 
     responseId match {
       case id: Long => Ok(Json.toJson(s"Record with ID = $id deleted successfully!"))
-      case _ => InternalServerError(Json.toJson("Unable to delete response at the moment!"))
     }
   }
 

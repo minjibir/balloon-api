@@ -14,44 +14,32 @@ class StateController @Inject()(cc: ControllerComponents)
   }
 
   def getState(id: Long): Action[AnyContent] = Action(parse.tolerantJson) {
-    val optionState: Option[State] = StateDao.findById(id)
-
-    optionState match {
+    StateDao.findById(id) match {
       case Some(state) => Ok(Json.toJson(state))
       case None => NotFound(Json.toJson("State not found"))
-      case _ => InternalServerError(Json.toJson("Oops! A server error has occurred!"))
     }
   }
 
   def postState: Action[JsValue] = Action(parse.json) {
     implicit request => {
-      val optionalState: Option[State] = request.body.asOpt[State]
-
-      optionalState match {
-        case Some(state) =>
-          Created(Json.toJson(StateDao.create(state)))
+      request.body.asOpt[State] match {
+        case Some(state) => Created(Json.toJson(StateDao.create(state)))
         case None => BadRequest(request.body)
       }
     }
   }
 
   def updateState: Action[JsValue] = Action(parse.json) {
-    implicit request => {
-      val optionState = request.body.asOpt[State]
-
-      optionState match {
+    implicit request =>
+      request.body.asOpt[State] match {
         case Some(p) => Ok(Json.toJson(StateDao.update(p)))
         case None => NotFound(Json.toJson("Record notfound!"))
       }
-    }
   }
 
   def deleteState(id: Long): Action[AnyContent] = Action {
-    val stateId = StateDao.delete(id)
-
-    stateId match {
+    StateDao.delete(id) match {
       case id: Long => Ok(Json.toJson(s"Record with ID = $id deleted successfully!"))
-      case _ => InternalServerError(Json.toJson("Unable to delete state at the moment!"))
     }
   }
 

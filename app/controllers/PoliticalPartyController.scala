@@ -19,7 +19,6 @@ class PoliticalPartyController @Inject()(cc: ControllerComponents)
     optionPoliticalParty match {
       case Some(politicalParty) => Ok(Json.toJson(politicalParty))
       case None => NotFound(Json.toJson("PoliticalParty not found"))
-      case _ => InternalServerError(Json.toJson("Oops! A server error has occurred!"))
     }
   }
 
@@ -28,9 +27,7 @@ class PoliticalPartyController @Inject()(cc: ControllerComponents)
       val optionalPoliticalParty: Option[PoliticalParty] = request.body.asOpt[PoliticalParty]
 
       optionalPoliticalParty match {
-        case Some(politicalParty) =>
-          val newPoliticalParty: PoliticalParty = PoliticalPartyDao.create(politicalParty)
-          Created(Json.toJson(newPoliticalParty))
+        case Some(politicalParty) => Created(Json.toJson(PoliticalPartyDao.create(politicalParty)))
         case None => BadRequest(request.body)
       }
     }
@@ -52,7 +49,6 @@ class PoliticalPartyController @Inject()(cc: ControllerComponents)
 
     politicalPartyId match {
       case id: Long => Ok(Json.toJson(s"Record with ID = $id deleted successfully!"))
-      case _ => InternalServerError(Json.toJson("Unable to delete politicalParty at the moment!"))
     }
   }
 

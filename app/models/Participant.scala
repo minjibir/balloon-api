@@ -12,7 +12,7 @@ case class Participant(
                         phoneNumber: String,
                         emailAddress: String,
                         employmentStatus: String,
-                        partyId: Long,
+                        partyId: Option[Long],
                         localGovernmentId: Long
                       )
 

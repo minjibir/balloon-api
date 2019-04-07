@@ -19,7 +19,6 @@ class GeoPoliticalZoneController @Inject()(cc: ControllerComponents)
     optionGeoPoliticalZone match {
       case Some(geoPoliticalZone) => Ok(Json.toJson(geoPoliticalZone))
       case None => NotFound(Json.toJson("GeoPoliticalZone not found"))
-      case _ => InternalServerError(Json.toJson("Oops! A server error has occurred!"))
     }
   }
 
@@ -51,7 +50,6 @@ class GeoPoliticalZoneController @Inject()(cc: ControllerComponents)
 
     geoPoliticalZoneId match {
       case id: Long => Ok(Json.toJson(s"Record with ID = $id deleted successfully!"))
-      case _ => InternalServerError(Json.toJson("Unable to delete geoPoliticalZone at the moment!"))
     }
   }
 

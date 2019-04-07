@@ -17,8 +17,18 @@ object ResponseDao {
     run(quote(responses.filter(_.id == lift(id)))).headOption
   }
 
+  def saveReponses(responses: List[Response]) = {
+    try {
+      run(quote(liftQuery(responses).foreach(e => query[Response].insert(e))))
+    } catch {
+      case e: Exception => println(e)
+    }
+  }
+
   def create(response: Response): Response = {
-    response.copy(id = run(quote(responses.insert(lift(response)).returning(_.id))))
+    response.copy(
+      id = run(quote(responses.insert(lift(response)).returning(_.id)))
+    )
   }
 
   def update(response: Response): Long = {

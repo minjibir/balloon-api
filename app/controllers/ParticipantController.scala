@@ -19,7 +19,6 @@ class ParticipantController @Inject()(cc: ControllerComponents)
     optionParticipant match {
       case Some(participant) => Ok(Json.toJson(participant))
       case None => NotFound(Json.toJson("Participant not found"))
-      case _ => InternalServerError(Json.toJson("Oops! A server error has occurred!"))
     }
   }
 
@@ -28,9 +27,7 @@ class ParticipantController @Inject()(cc: ControllerComponents)
       val optionalParticipant: Option[Participant] = request.body.asOpt[Participant]
 
       optionalParticipant match {
-        case Some(participant) =>
-          val newParticipant: Participant = ParticipantDao.create(participant)
-          Created(Json.toJson(newParticipant))
+        case Some(participant) => Created(Json.toJson(ParticipantDao.create(participant)))
         case None => BadRequest(request.body)
       }
     }
@@ -52,7 +49,6 @@ class ParticipantController @Inject()(cc: ControllerComponents)
 
     participantId match {
       case id: Long => Ok(Json.toJson(s"Record with ID = $id deleted successfully!"))
-      case _ => InternalServerError(Json.toJson("Unable to delete participant at the moment!"))
     }
   }
 

@@ -5,21 +5,7 @@
 
 # An example controller showing a sample home page
 GET           /                             controllers.HomeController.index
-
-
-# Participant endpoint
-GET           /participants/:id             controllers.ParticipantController.getParticipant(id: Long)
-GET           /participants                 controllers.ParticipantController.getAllParticipants
-POST          /participants                 controllers.ParticipantController.postParticipant
-
-
-# State endpoint
-GET           /states/:id                   controllers.StateController.getState(id: Long)
-GET           /states                       controllers.StateController.getAllStates
-POST          /states                       controllers.StateController.postState
-PUT           /states                       controllers.StateController.updateState
-DELETE        /states/:id                   controllers.StateController.deleteState(id: Long)
-
+#POST        /login
 
 # Geo Political Zones endpoint
 GET           /zones/:id                    controllers.GeoPoliticalZoneController.getGeoPoliticalZone(id: Long)
@@ -28,7 +14,6 @@ POST          /zones                        controllers.GeoPoliticalZoneControll
 PUT           /zones                        controllers.GeoPoliticalZoneController.updateGeoPoliticalZone
 DELETE        /zones/:id                    controllers.GeoPoliticalZoneController.deleteGeoPoliticalZone(id: Long)
 
-
 # Local Governmet endpoint
 GET           /local-governments/:id        controllers.LocalGovernmentController.getLocalGovernment(id: Long)
 GET           /local-governments            controllers.LocalGovernmentController.getAllLocalGovernments
@@ -36,6 +21,54 @@ POST          /local-governments            controllers.LocalGovernmentControlle
 PUT           /local-governments            controllers.LocalGovernmentController.updateLocalGovernment
 DELETE        /local-governments/:id        controllers.LocalGovernmentController.deleteLocalGovernment(id: Long)
 
+# Participant endpoint
+GET           /participants/:id             controllers.ParticipantController.getParticipant(id: Long)
+GET           /participants                 controllers.ParticipantController.getAllParticipants
+POST          /participants                 controllers.ParticipantController.postParticipant
+PUT           /participants                 controllers.ParticipantController.updateParticipant
+DELETE        /participants/:id             controllers.ParticipantController.deleteParticipant(id: Long)
+
+# PoliticalParty endpoint
+GET           /political-parties/:id        controllers.PoliticalPartyController.getPoliticalParty(id: Long)
+GET           /political-parties            controllers.PoliticalPartyController.getAllPoliticalPartys
+POST          /political-parties            controllers.PoliticalPartyController.postPoliticalParty
+PUT           /political-parties            controllers.PoliticalPartyController.updatePoliticalParty
+DELETE        /political-parties/:id        controllers.PoliticalPartyController.deletePoliticalParty(id: Long)
+
+# Question endpoint
+GET           /questions/:id                controllers.QuestionController.getQuestion(id: Long)
+GET           /questions                    controllers.QuestionController.getAllQuestions
+POST          /questions                    controllers.QuestionController.postQuestion
+PUT           /questions                    controllers.QuestionController.updateQuestion
+DELETE        /questions/:id                controllers.QuestionController.deleteQuestion(id: Long)
+
+# Response endpoint
+GET           /responses/:id                controllers.ResponseController.getResponse(id: Long)
+GET           /responses                    controllers.ResponseController.getAllResponses
+POST          /responses                    controllers.ResponseController.postResponse
+PUT           /responses                    controllers.ResponseController.updateResponse
+DELETE        /responses/:id                controllers.ResponseController.deleteResponse(id: Long)
+
+# State endpoint
+GET           /states/:id                   controllers.StateController.getState(id: Long)
+GET           /states                       controllers.StateController.getAllStates
+POST          /states                       controllers.StateController.postState
+PUT           /states                       controllers.StateController.updateState
+DELETE        /states/:id                   controllers.StateController.deleteState(id: Long)
+
+# Survey endpoint
+GET           /surveys/:id                  controllers.SurveyController.getSurvey(id: Long)
+GET           /surveys                      controllers.SurveyController.getAllSurveys
+POST          /surveys                      controllers.SurveyController.postSurvey
+PUT           /surveys                      controllers.SurveyController.updateSurvey
+DELETE        /surveys/:id                  controllers.SurveyController.deleteSurvey(id: Long)
+
+# Users endpoint
+GET           /users/:email                 controllers.UserController.getUser(email: String)
+GET           /users                        controllers.UserController.getAllUsers
+POST          /users                        controllers.UserController.postUser
+PUT           /users                        controllers.UserController.updateUser
+DELETE        /users/:email                 controllers.UserController.deleteUser(email: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET           /assets/*file                 controllers.Assets.versioned(path="/public", file: Asset)

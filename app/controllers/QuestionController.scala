@@ -1,5 +1,7 @@
 package controllers
 
+import java.time.LocalDateTime
+
 import dao.QuestionDao
 import javax.inject.Inject
 import models.Question
@@ -19,18 +21,14 @@ class QuestionController @Inject()(cc: ControllerComponents)
     optionQuestion match {
       case Some(question) => Ok(Json.toJson(question))
       case None => NotFound(Json.toJson("Question not found"))
-      case _ => InternalServerError(Json.toJson("Oops! A server error has occurred!"))
     }
   }
 
   def postQuestion: Action[JsValue] = Action(parse.json) {
     implicit request => {
-      val optionalQuestion: Option[Question] = request.body.asOpt[Question]
-
-      optionalQuestion match {
+      request.body.asOpt[Question] match {
         case Some(question) =>
-          val newQuestion: Question = QuestionDao.create(question)
-          Created(Json.toJson(newQuestion))
+          Created(Json.toJson(QuestionDao.create(Question(0, question.text, LocalDateTime.now()))))
         case None => BadRequest(request.body)
       }
     }
@@ -48,11 +46,8 @@ class QuestionController @Inject()(cc: ControllerComponents)
   }
 
   def deleteQuestion(id: Long): Action[AnyContent] = Action {
-    val questionId = QuestionDao.delete(id)
-
-    questionId match {
+    QuestionDao.delete(id) match {
       case id: Long => Ok(Json.toJson(s"Record with ID = $id deleted successfully!"))
-      case _ => InternalServerError(Json.toJson("Unable to delete question at the moment!"))
     }
   }
 

@@ -19,7 +19,6 @@ class LocalGovernmentController @Inject()(cc: ControllerComponents)
     optionLocalGovernment match {
       case Some(localGovernment) => Ok(Json.toJson(localGovernment))
       case None => NotFound(Json.toJson("LocalGovernment not found"))
-      case _ => InternalServerError(Json.toJson("Oops! A server error has occurred!"))
     }
   }
 
@@ -28,9 +27,7 @@ class LocalGovernmentController @Inject()(cc: ControllerComponents)
       val optionalLocalGovernment: Option[LocalGovernment] = request.body.asOpt[LocalGovernment]
 
       optionalLocalGovernment match {
-        case Some(localGovernment) =>
-          val newLocalGovernment: LocalGovernment = LocalGovernmentDao.create(localGovernment)
-          Created(Json.toJson(newLocalGovernment))
+        case Some(localGovernment) => Created(Json.toJson(LocalGovernmentDao.create(localGovernment)))
         case None => BadRequest(request.body)
       }
     }
@@ -52,7 +49,6 @@ class LocalGovernmentController @Inject()(cc: ControllerComponents)
 
     localGovernmentId match {
       case id: Long => Ok(Json.toJson(s"Record with ID = $id deleted successfully!"))
-      case _ => InternalServerError(Json.toJson("Unable to delete localGovernment at the moment!"))
     }
   }
 

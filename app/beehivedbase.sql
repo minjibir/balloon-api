@@ -38,16 +38,16 @@ CREATE TABLE IF NOT EXISTS local_government
 
 CREATE TABLE IF NOT EXISTS question
 (
-  id         SERIAL UNIQUE PRIMARY KEY,
-  text       TEXT NOT NULL,
-  added_at   TIMESTAMP DEFAULT(CURRENT_TIMESTAMP)
+  id       SERIAL UNIQUE PRIMARY KEY,
+  text     TEXT NOT NULL,
+  added_at TIMESTAMP DEFAULT (NOW())
 );
 
 CREATE TABLE IF NOT EXISTS participant
 (
   id                  SERIAL UNIQUE PRIMARY KEY,
   first_name          VARCHAR(45) NOT NULL,
-  last_name          VARCHAR(45) NOT NULL,
+  last_name           VARCHAR(45) NOT NULL,
   middle_name         VARCHAR(45) NULL,
   gender              VARCHAR(45) NOT NULL,
   marital_status      VARCHAR(45) NOT NULL,
@@ -56,11 +56,6 @@ CREATE TABLE IF NOT EXISTS participant
   employment_status   VARCHAR(45) NOT NULL,
   party_id            INT         NOT NULL,
   local_government_id INT         NOT NULL,
-  CONSTRAINT fk_people_political_parties1
-    FOREIGN KEY (party_id)
-      REFERENCES political_party (id)
-      ON DELETE CASCADE
-      ON UPDATE CASCADE,
   CONSTRAINT fk_people_local_governments1
     FOREIGN KEY (local_government_id)
       REFERENCES local_government (id)
@@ -70,9 +65,9 @@ CREATE TABLE IF NOT EXISTS participant
 
 CREATE TABLE IF NOT EXISTS survey
 (
-  id             INT NOT NULL PRIMARY KEY UNIQUE,
-  taken_at       TIMESTAMP DEFAULT(CURRENT_TIMESTAMP),
-  participant_id INT NOT NULL,
+  id             SERIAL UNIQUE PRIMARY KEY,
+  taken_at       TIMESTAMP DEFAULT (NOW()),
+  participant_id INT       DEFAULT (NULL),
   CONSTRAINT fk_surveys_people1
     FOREIGN KEY (participant_id)
       REFERENCES participant (id)
@@ -82,9 +77,10 @@ CREATE TABLE IF NOT EXISTS survey
 
 CREATE TABLE IF NOT EXISTS response
 (
-  id        INT         NOT NULL,
-  survey_id INT         NOT NULL UNIQUE,
-  response  VARCHAR(45) NOT NULL,
+  id          SERIAL UNIQUE,
+  survey_id   INT         NOT NULL,
+  question_id INT         NOT NULL,
+  response    VARCHAR(45) NOT NULL,
   PRIMARY KEY (id, survey_id),
   CONSTRAINT fk_surveysquestions_questions1
     FOREIGN KEY (id)
