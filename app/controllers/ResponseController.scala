@@ -30,6 +30,7 @@ class ResponseController @Inject()(cc: ControllerComponents)
             e =>
               e.asOpt[Response] match {
                 case Some(r) => ResponseDao.create(Response(r.id, r.surveyId, r.questionId, r.response))
+                case None => BadRequest("Bad request")
               }
           }
           Created("Successful.")

@@ -41,7 +41,6 @@ class UserController @Inject()(cc: ControllerComponents)
   def deleteUser(email: String): Action[AnyContent] = Action {
     UserDao.delete(email) match {
       case id: Long => Ok(Json.toJson(s"Record with ID = $id deleted successfully!"))
-      case _ => InternalServerError(Json.toJson("Unable to delete user at the moment!"))
     }
   }
 

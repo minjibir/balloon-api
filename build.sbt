@@ -12,12 +12,6 @@ libraryDependencies += jdbc
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.1" % Test
 
 libraryDependencies ++= Seq(
-  "org.postgresql" % "postgresql" % "9.4.1208",
+  "mysql" % "mysql-connector-java" % "8.0.15",
   "io.getquill" %% "quill-jdbc" % "3.1.0"
 )
-
-//
-//libraryDependencies ++= Seq(
-//  "mysql" % "mysql-connector-java" % "8.0.15",
-//  "io.getquill" %% "quill-jdbc" % "3.1.0"
-//)
