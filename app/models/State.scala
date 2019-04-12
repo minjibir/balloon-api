@@ -3,7 +3,7 @@ package models
 import play.api.libs.json.{Json, Reads, Writes}
 
 case class State(
-                  id: Long,
+                  id: Long = 0,
                   name: String,
                   zoneId: Long
                 )
