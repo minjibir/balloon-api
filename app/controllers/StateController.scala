@@ -23,7 +23,7 @@ class StateController @Inject()(cc: ControllerComponents)
   def postState: Action[JsValue] = Action(parse.json) {
     implicit request => {
       request.body.asOpt[State] match {
-        case Some(state) => Created(Json.toJson(StateDao.create(state)))
+        case Some(state) =>Created(Json.toJson(StateDao.create(state)))
         case None => BadRequest(request.body)
       }
     }
