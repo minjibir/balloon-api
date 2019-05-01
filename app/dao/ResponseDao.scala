@@ -13,6 +13,10 @@ object ResponseDao {
     run(quote(query[Response]))
   }
 
+  def findBySurvey(surveyId: Long): List[Response] = {
+    run(quote(responses.filter(_.surveyId == lift(surveyId))))
+  }
+
   def findById(id: Long): Option[Response] = {
     run(quote(responses.filter(_.id == lift(id)))).headOption
   }

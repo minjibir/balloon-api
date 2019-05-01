@@ -3,7 +3,7 @@ package models
 import play.api.libs.json.{Json, Reads, Writes}
 
 case class Response(
-                     id: Long = 0,
+                    id: Long,
                      surveyId: Long,
                      questionId: Long,
                      response: String,

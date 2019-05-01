@@ -13,6 +13,10 @@ class ResponseController @Inject()(cc: ControllerComponents)
     Ok(Json.toJson(ResponseDao.findAll()))
   }
 
+  def getResponseBySurveyId(surveyId: Long) = Action {
+    Ok(Json.toJson(ResponseDao.findBySurvey(surveyId)))
+  }
+
   def getResponse(id: Long): Action[AnyContent] = Action(parse.tolerantJson) {
     val optionResponse: Option[Response] = ResponseDao.findById(id)
 

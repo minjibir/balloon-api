@@ -43,6 +43,7 @@ PUT           /questions                    controllers.QuestionController.updat
 DELETE        /questions/:id                controllers.QuestionController.deleteQuestion(id: Long)
 
 # Response endpoint
+GET           /responses/surveys/:id        controllers.ResponseController.getResponseBySurveyId(id: Long)
 GET           /responses/:id                controllers.ResponseController.getResponse(id: Long)
 GET           /responses                    controllers.ResponseController.getAllResponses
 POST          /responses                    controllers.ResponseController.postResponse

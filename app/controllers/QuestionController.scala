@@ -16,9 +16,7 @@ class QuestionController @Inject()(cc: ControllerComponents)
   }
 
   def getQuestion(id: Long): Action[AnyContent] = Action(parse.tolerantJson) {
-    val optionQuestion: Option[Question] = QuestionDao.findById(id)
-
-    optionQuestion match {
+    QuestionDao.findById(id) match {
       case Some(question) => Ok(Json.toJson(question))
       case None => NotFound(Json.toJson("Question not found"))
     }
