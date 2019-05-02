@@ -6,40 +6,40 @@ import models.Response
 import play.api.libs.json._
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 
-class ResponseController @Inject()(cc: ControllerComponents)
+import scala.concurrent.{ExecutionContext, Future}
+
+class ResponseController @Inject()(cc: ControllerComponents, implicit val ec: ExecutionContext)
   extends AbstractController(cc) {
 
-  def getAllResponses: Action[AnyContent] = Action(parse.tolerantJson) {
-    Ok(Json.toJson(ResponseDao.findAll()))
-  }
-
-  def getResponseBySurveyId(surveyId: Long) = Action {
-    Ok(Json.toJson(ResponseDao.findBySurvey(surveyId)))
-  }
-
-  def getResponse(id: Long): Action[AnyContent] = Action(parse.tolerantJson) {
-    val optionResponse: Option[Response] = ResponseDao.findById(id)
-
-    optionResponse match {
-      case Some(response) => Ok(Json.toJson(response))
-      case None => NotFound(Json.toJson("Response not found"))
+  def getAllResponses: Action[AnyContent] = Action.async {
+    Future {
+      Ok(Json.toJson(ResponseDao.findAll()))
     }
   }
 
-  def postResponse: Action[JsValue] = Action(parse.json) {
-    implicit request => {
-      request.body match {
-        case JsArray(responses) =>
-          responses.map {
-            e =>
-              e.asOpt[Response] match {
-                case Some(r) => ResponseDao.create(Response(r.id, r.surveyId, r.questionId, r.response))
-                case None => BadRequest("Bad request")
-              }
-          }
-          Created("Successful.")
-        case _ => BadRequest("Bad request.")
+  def getResponseBySurveyId(surveyId: Long): Action[AnyContent] = Action.async {
+    Future {
+      Ok(Json.toJson(ResponseDao.findBySurveyId(surveyId)))
+    }
+  }
+
+  def getResponse(id: Long): Action[AnyContent] = Action.async {
+    Future {
+      ResponseDao.findById(id) match {
+        case Some(response) => Ok(Json.toJson(response))
+        case None => NotFound(Json.toJson("Response not found"))
       }
+    }
+  }
+
+  def postResponse: Action[JsValue] = Action.async(parse.json) {
+    request => {
+      request.body.validate[List[Response]].fold(
+        error => Future.successful(BadRequest(Json.toJson(error.toString()))),
+        responses => {
+          Future(Created(Json.toJson(ResponseDao.saveResponses(responses))))
+        }
+      )
     }
   }
 
@@ -54,11 +54,11 @@ class ResponseController @Inject()(cc: ControllerComponents)
     }
   }
 
-  def deleteResponse(id: Long): Action[AnyContent] = Action {
-    val responseId = ResponseDao.delete(id)
-
-    responseId match {
-      case id: Long => Ok(Json.toJson(s"Record with ID = $id deleted successfully!"))
+  def deleteResponse(id: Long): Action[AnyContent] = Action.async {
+    Future {
+      ResponseDao.delete(id) match {
+        case id: Long => Ok(Json.toJson(s"Record with ID = $id deleted successfully!"))
+      }
     }
   }
 

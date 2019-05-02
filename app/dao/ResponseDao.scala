@@ -1,7 +1,7 @@
 package dao
 
+import DbConfig.ctx
 import models.Response
-import DbConfig._
 
 object ResponseDao {
 
@@ -13,7 +13,7 @@ object ResponseDao {
     run(quote(query[Response]))
   }
 
-  def findBySurvey(surveyId: Long): List[Response] = {
+  def findBySurveyId(surveyId: Long): List[Response] = {
     run(quote(responses.filter(_.surveyId == lift(surveyId))))
   }
 
@@ -21,12 +21,8 @@ object ResponseDao {
     run(quote(responses.filter(_.id == lift(id)))).headOption
   }
 
-  def saveReponses(responses: List[Response]) = {
-    try {
-      run(quote(liftQuery(responses).foreach(e => query[Response].insert(e))))
-    } catch {
-      case e: Exception => println(e)
-    }
+  def saveResponses(responses: List[Response]): List[Long] = {
+    run(quote(liftQuery(responses).foreach(e => query[Response].insert(e))))
   }
 
   def create(response: Response): Response = {
