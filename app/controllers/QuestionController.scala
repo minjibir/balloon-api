@@ -6,9 +6,9 @@ import dao.QuestionDao
 import javax.inject.Inject
 import models.Question
 import play.api.libs.json._
-import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
+import play.api.mvc.{ AbstractController, Action, AnyContent, ControllerComponents }
 
-class QuestionController @Inject()(cc: ControllerComponents)
+class QuestionController @Inject() (cc: ControllerComponents)
   extends AbstractController(cc) {
 
   def getAllQuestions: Action[AnyContent] = Action(parse.tolerantJson) {
@@ -18,29 +18,31 @@ class QuestionController @Inject()(cc: ControllerComponents)
   def getQuestion(id: Long): Action[AnyContent] = Action(parse.tolerantJson) {
     QuestionDao.findById(id) match {
       case Some(question) => Ok(Json.toJson(question))
-      case None => NotFound(Json.toJson("Question not found"))
+      case None           => NotFound(Json.toJson("Question not found"))
     }
   }
 
   def postQuestion: Action[JsValue] = Action(parse.json) {
-    implicit request => {
-      request.body.asOpt[Question] match {
-        case Some(question) =>
-          Created(Json.toJson(QuestionDao.create(Question(0, question.text, LocalDateTime.now()))))
-        case None => BadRequest(request.body)
+    implicit request =>
+      {
+        request.body.asOpt[Question] match {
+          case Some(question) =>
+            Created(Json.toJson(QuestionDao.create(Question(0, question.text, question.choices, LocalDateTime.now()))))
+          case None => BadRequest(request.body)
+        }
       }
-    }
   }
 
   def updateQuestion: Action[JsValue] = Action(parse.json) {
-    implicit request => {
-      val optionQuestion = request.body.asOpt[Question]
+    implicit request =>
+      {
+        val optionQuestion = request.body.asOpt[Question]
 
-      optionQuestion match {
-        case Some(p) => Ok(Json.toJson(QuestionDao.update(p)))
-        case None => NotFound(Json.toJson("Record notfound!"))
+        optionQuestion match {
+          case Some(p) => Ok(Json.toJson(QuestionDao.update(p)))
+          case None    => NotFound(Json.toJson("Record notfound!"))
+        }
       }
-    }
   }
 
   def deleteQuestion(id: Long): Action[AnyContent] = Action {

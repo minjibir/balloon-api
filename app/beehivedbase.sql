@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS question
 (
   id       SERIAL UNIQUE PRIMARY KEY,
   text     TEXT NOT NULL,
+  choices  TEXT NOT NULL,
   added_at TIMESTAMP DEFAULT (NOW())
 );
 
