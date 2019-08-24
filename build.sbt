@@ -1,6 +1,6 @@
-name := """beehive-rest-api"""
+name := """balloon"""
 organization := "com.cyapex"
-
+maintainer := "jabir.minjibir@gmail.com"
 version := "1.0-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)

@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/beehive-rest-api -Dhttp.port=${PORT} -Dplay.http.secret.key="90Latabg@524Ik@n"
+web: target/universal/stage/bin/balloon -Dhttp.port=${PORT} -Dplay.http.secret.key="90Latabg@524Ik@n"
